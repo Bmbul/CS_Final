@@ -1,36 +1,53 @@
 var ball;
 var plate;
-var blocks = [];
+var breaks = [];
+var y = 70;
+var bg;
+var t = 0;
+var player;
+var lifes = [];
+
+
 function setup() {
-  createCanvas(500,500);
+ bg = loadImage("https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Fornax_Dwarf.jpg/600px-Fornax_Dwarf.jpg");
+ canvas = createCanvas(600,600);
+  
   ball = new Ball ();
   
   plate = new Plate ();
-  
-   /*for(var i = 0; i < 5; i++){
-     for(var j = 0; j <5; j++){
-   blocks[i][j] = new Breaks ();
+
+  player = new Game ();
+ 
+  for(i = 0; i < 15; i++ ){
+    breaks[i] = new Breaks(55+i*120, y);
+    if (breaks[i].x + breaks[i].length > width){
+      breaks[i].y = breaks[i].y + 70 * floor((breaks[i].x + breaks[i].length/2)/width);
+      breaks[i].x = breaks[i].x - width * floor((breaks[i].x + breaks[i].length/2)/width);
     }
-   }*/
-  /*if(ball.removing){
-    h1 = createElement('h1',' 3 lifes');
-    h1.position(100,100);
-  }*/
+  }
+
+  
+  
 }
 
+
 function draw() {
-  background(100);
+  background(bg);
+  player.lifes();
+  player.gameOver();
+  player.score();
   ball.display();
   ball.move();
   ball.bounce();
   plate.draw();
   plate.move();
-  for(var i = 0; i < blocks.length; i++){
-    for(var j = 0; j <blocks.length; j++){
-       blocks[i][j].createBreaks();
-   }
-  }
+
   //ball.removing();
+  fill(75, 127, 232);
+  for(i = 0; i < breaks.length; i++){
+   breaks[i].createBreaks();
+   ball.distroy();
+  }
   
   ball.changeDir();
   if(keyIsDown(LEFT_ARROW)) {
@@ -45,7 +62,7 @@ function draw() {
 function keyReleased (){
   plate.dir(0);
 }
-/*
-function keyIsPressed() {
-  
+
+/*function keyIsPressed() {
+  loop()
 }*/
